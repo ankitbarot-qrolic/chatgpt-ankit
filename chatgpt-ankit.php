@@ -111,7 +111,7 @@ Class ChatGPT_Ankit{
 		check_ajax_referer('chatgpt_generate_content', 'nonce');
 	
 		// Set your OpenAI API key and ChatGPT instance URL
-		$api_key = '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';
+		$api_key = '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';
 		$api_url = 'https://api.openai.com/v1';
 	
 		// Set the parameters for the content generation request

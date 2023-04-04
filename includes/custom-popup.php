@@ -7,7 +7,7 @@
             <h4 class="modal-title">ChatGPT Helper Content</h4>
             </div>
             <div class="modal-body" id="model-body">
-                <p id="chatgpt-text">This is a large modal.</p>
+                <textarea id="chatgpt-text">This is a large modal.</textarea>
             </div>
             
             <div class="modal-footer">

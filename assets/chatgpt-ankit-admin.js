@@ -24,8 +24,8 @@ jQuery(document).ready(function() {
                 //     return response.content;
                 // });
                 jQuery('#myModal').show();
-                jQuery("#model-body").text(function() {
-                    return "<p id='chatgpt-text'>" + response.content + "</p>";
+                jQuery("#chatgpt-text").val(function() {
+                    return response.content;
                 });
                 // alert(response.content);
             }
