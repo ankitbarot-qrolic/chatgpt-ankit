@@ -30,6 +30,7 @@ Class ChatGPT_Ankit{
 
 	function _construct(){
 		// add_action()		
+		// add_action("init",array( $this, "enqueue"));
 	}
 
 	public function activate(){
@@ -79,25 +80,8 @@ Class ChatGPT_Ankit{
 		);
 	}
 
-	public function render_chatgpt_metabox() 
-    {
-        wp_nonce_field('chatgpt_generate_content', 'chatgpt_generate_content_nonce');
-        ?>
-				<label for="search"><b>Ask :</b></label>
-				<!-- <input type="text" name="search" id="search" > -->
-				<textarea id="search" rows="4" cols="70"></textarea>
-			<br/>
-			<br/>	
-				<button type="button" class="button button-primary" name="chatgpt-generate-button" id="chatgpt-generate-button"> Generate Content </button>
-			<br/>
-			<br/>
-				<!-- <label for="chatgpt-content">Answer : </label> -->
-				<!-- <input type="text" id="chatgpt-content" name="chatgpt-content" > -->
-				<!-- <textarea id='data' rows="4" cols="70"> </textarea>	 -->
-	    <?php
-
-		require_once plugin_dir_path(__FILE__) . "/includes/custom-popup.php";
-    }
+	
+	
 
     public function generate_chatgpt_content() {
 
@@ -111,7 +95,7 @@ Class ChatGPT_Ankit{
 		check_ajax_referer('chatgpt_generate_content', 'nonce');
 	
 		// Set your OpenAI API key and ChatGPT instance URL
-		$api_key = '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';
+		$api_key = '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';
 		$api_url = 'https://api.openai.com/v1';
 	
 		// Set the parameters for the content generation request
@@ -153,7 +137,29 @@ Class ChatGPT_Ankit{
 	function enqueue(){
 		// enqueue all our scripts
 		wp_enqueue_style( 'my_pluginstyle' , plugins_url( '/assets/chatgpt-ankit-admin.css',__FILE__) );    
-		wp_enqueue_script( 'my_pluginscript' , plugins_url( '/assets/chatgpt-ankit-admin.js',__FILE__) );
+		wp_enqueue_script( 'my_pluginscript' , 
+							plugins_url( '/assets/chatgpt-ankit-admin.js',__FILE__), 
+							array(), 
+							date("h.i.s"),
+							true);
+	}
+
+	function register(){
+	
+		add_action('admin_enqueue_scripts', array( $this, 'enqueue'));
+
+		add_action('admin_enqueue_scripts', array( $this, 'enqueue_custom_popup_scripts'));
+		
+		add_action('admin_enqueue_scripts', array( $this,'enqueue_custom_popup_scripts'));    
+
+		// add ajax script for metabox
+	
+		add_action('add_meta_boxes', array( $this,'add_chatgpt_metabox'));
+
+		add_action('wp_ajax_generate_chatgpt_content', array( $this,'generate_chatgpt_content'));
+
+		add_action('wp_ajax_nopriv_generate_chatgpt_content',array( $this,'generate_chatgpt_content'));
+
 	}
 }
  
@@ -162,23 +168,12 @@ if( class_exists("ChatGPT_Ankit") )
     $ankitplugin = new ChatGPT_Ankit();
 
 
+	$ankitplugin->register();
+
 	// function generate_chatgpt_content(){
 	// 	 $ankitplugin->generate_chatgpt_content();
 	// }
 	
-	// add ajax script for metabox
-	add_action('admin_enqueue_scripts', array( $ankitplugin, 'enqueue'));
-
-	add_action('admin_enqueue_scripts', array( $ankitplugin, 'enqueue_custom_popup_scripts'));
-    
-	add_action('admin_enqueue_scripts', array( $ankitplugin,'enqueue_custom_popup_scripts'));    
-
-	add_action('add_meta_boxes', array( $ankitplugin,'add_chatgpt_metabox'));
-
-	add_action('wp_ajax_generate_chatgpt_content', array( $ankitplugin,'generate_chatgpt_content'));
-
-	add_action('wp_ajax_nopriv_generate_chatgpt_content',array( $ankitplugin,'generate_chatgpt_content'));
-
 	// activation by instance of class
 	register_activation_hook(__FILE__, array( $ankitplugin, 'activate'));
 	

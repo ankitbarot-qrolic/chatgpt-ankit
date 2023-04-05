@@ -11,6 +11,7 @@ jQuery(document).ready(function() {
                 search: search
             },
             beforeSend: function() {
+                jQuery('#myModal').hide();
                 jQuery('#chatgpt-generate-button').prop('disabled', true).text('Generating...');
             },
             success: function(response) {
@@ -44,9 +45,9 @@ jQuery(document).ready(function() {
     jQuery("#copy-btn").click(function() {
         // jQuery('#myModal').hide();
         // jQuery('#myModal').attr({ "style": "display: none" });
-        var copyText = jQuery("#model-body").select();
+        var copyText = jQuery("#chatgpt-text").val();
+        navigator.clipboard.writeText(copyText);
         // jQuery(document).execCommand('copy');
-        navigator.clipboard.writeText(copyText.text);
     });
     jQuery("#close-btn2").click(function() {
         jQuery('#myModal').hide();
